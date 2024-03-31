@@ -1,0 +1,103 @@
+NODE js
+
+1.
+index.js
+
+var metrics =require('./server');
+var x=50;
+console.log("Change to x km to m is "+ metrics.km(x));
+console.log("Change to x m to cm is "+ metrics.m(x));
+console.log("Change to x cm to mm is "+ metrics.cm(x));
+console.log("Change to x mm to cm is "+ metrics.mm(x));
+
+
+server.js
+
+
+exports.km=function(x)
+{
+    return x*1000;
+};
+exports.m=function(x)
+{
+    return x*100;
+};
+exports.cm=function(x)
+{
+    return x*10;
+};
+exports.mm=function(x)
+{
+    return x/10;
+};
+
+
+package.json
+
+
+{
+  "name": "metrices_h0",
+  "version": "0.1.1",
+  "main": "server",
+  "dependencies": {
+    "metrices_h0": "^0.1.1",
+    "metrics_h0": "^0.1.1",
+    "node": "^18.20.0",
+    "npm": "^10.5.0"
+  }
+}
+
+
+2.
+
+server.js
+
+
+const http = require('http'); 
+const hostname = '127.0.0.1';
+const port = 3000;
+
+const requestListener = function(req,res){
+    res.statusCode = 200; 
+    res.setHeader('Content-Type','text/plain');
+
+    if(req.method==='POST'){
+        res.end('Hello World\n Welcome to Node Js with POST');
+    }
+
+    if(req.method==='GET'){
+        res.end('Hello World\n Welcome to Node Js with GET');
+    }
+}
+
+const server = http.createServer(requestListener);
+server.listen(port, hostname);
+
+
+client.js
+
+
+var http = require('http'); 
+var options = {
+    hostname: '127.0.0.1',
+    port: 3000, 
+    method:'POST'
+};
+
+var req = http.request(options, function(response){ 
+    var str=''
+    response.on('data',function(chunk){
+        str+=chunk;
+    });
+
+    response.on('end', function(){
+        console.log(str);
+   });
+
+});
+
+req.on('error', error=>{
+    console.error(error);
+});
+
+req.end();
